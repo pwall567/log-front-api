@@ -80,6 +80,44 @@ public class LoggerFactoryTest {
     }
 
     @Test
+    public void shouldCreateLoggerWithSpecifiedClass() {
+        MockLoggerFactory mockLoggerFactory = new MockLoggerFactory();
+        Logger logger = mockLoggerFactory.getLogger(LoggerFactoryTest.class);
+        assertEquals(qualifiedClassName, logger.getName());
+        assertEquals(Level.INFO, logger.getLevel());
+        assertSame(LoggerFactory.systemClock, logger.getClock());
+    }
+
+    @Test
+    public void shouldCreateLoggerWithSpecifiedClassAndLevel() {
+        MockLoggerFactory mockLoggerFactory = new MockLoggerFactory();
+        Logger logger = mockLoggerFactory.getLogger(LoggerFactoryTest.class, Level.DEBUG);
+        assertEquals(qualifiedClassName, logger.getName());
+        assertEquals(Level.DEBUG, logger.getLevel());
+        assertSame(LoggerFactory.systemClock, logger.getClock());
+    }
+
+    @Test
+    public void shouldCreateLoggerWithSpecifiedClassAndClock() {
+        MockLoggerFactory mockLoggerFactory = new MockLoggerFactory();
+        Clock fixedClock = Clock.fixed(Instant.now(), ZoneOffset.UTC);
+        Logger logger = mockLoggerFactory.getLogger(LoggerFactoryTest.class, fixedClock);
+        assertEquals(qualifiedClassName, logger.getName());
+        assertEquals(Level.INFO, logger.getLevel());
+        assertSame(fixedClock, logger.getClock());
+    }
+
+    @Test
+    public void shouldCreateLoggerWithSpecifiedClassLevelAndClock() {
+        MockLoggerFactory mockLoggerFactory = new MockLoggerFactory();
+        Clock fixedClock = Clock.fixed(Instant.now(), ZoneOffset.UTC);
+        Logger logger = mockLoggerFactory.getLogger(LoggerFactoryTest.class, Level.DEBUG, fixedClock);
+        assertEquals(qualifiedClassName, logger.getName());
+        assertEquals(Level.DEBUG, logger.getLevel());
+        assertSame(fixedClock, logger.getClock());
+    }
+
+    @Test
     public void shouldCreateLoggerWithNameDeterminedDynamically() {
         MockLoggerFactory mockLoggerFactory = new MockLoggerFactory();
         Logger logger = mockLoggerFactory.getLogger();

@@ -90,6 +90,8 @@ The other variations omit one or more of the parameters, and the defaults are as
 - `level`: `INFO`
 - `clock`: the system clock
 
+There are also versions that take a Java `Class`; the fully qualified class name will be used as the name.
+
 ### Logger
 
 The `Logger` interface specifies a number of logging operations related to the different logging levels:
@@ -143,25 +145,25 @@ A `NullLogger` is a `Logger` that outputs nothing &ndash; it includes null imple
 
 ## Dependency Specification
 
-The latest version of the library is 1.0.1, and it may be obtained from the Maven Central repository.
+The latest version of the library is 1.1, and it may be obtained from the Maven Central repository.
 
 ### Maven
 ```xml
     <dependency>
       <groupId>net.pwall.log</groupId>
       <artifactId>log-front-api</artifactId>
-      <version>1.0.1</version>
+      <version>1.1</version>
     </dependency>
 ```
 ### Gradle
 ```groovy
-    implementation 'net.pwall.log:log-front-api:1.0.1'
+    implementation 'net.pwall.log:log-front-api:1.1'
 ```
 ### Gradle (kts)
 ```kotlin
-    implementation("net.pwall.log:log-front-api:1.0.1")
+    implementation("net.pwall.log:log-front-api:1.1")
 ```
 
 Peter Wall
 
-2022-05-09
+2022-05-10

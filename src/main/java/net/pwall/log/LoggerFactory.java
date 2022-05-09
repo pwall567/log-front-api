@@ -81,6 +81,50 @@ public interface LoggerFactory<L extends Logger> {
     }
 
     /**
+     * Get a {@link Logger} with the specified {@link Class}, level and clock.
+     *
+     * @param   javaClass   the {@link Class}
+     * @param   level       the level
+     * @param   clock       the clock
+     * @return              the {@link Logger}
+     */
+    default L getLogger(Class<?> javaClass, Level level, Clock clock) {
+        return getLogger(javaClass.getName(), level, clock);
+    }
+
+    /**
+     * Get a {@link Logger} with the specified name and level.
+     *
+     * @param   javaClass   the {@link Class}
+     * @param   level       the level
+     * @return              the {@link Logger}
+     */
+    default L getLogger(Class<?> javaClass, Level level) {
+        return getLogger(javaClass.getName(), level, getDefaultClock());
+    }
+
+    /**
+     * Get a {@link Logger} with the specified name and clock.
+     *
+     * @param   javaClass   the {@link Class}
+     * @param   clock       the clock
+     * @return              the {@link Logger}
+     */
+    default L getLogger(Class<?> javaClass, Clock clock) {
+        return getLogger(javaClass.getName(), getDefaultLevel(), clock);
+    }
+
+    /**
+     * Get a {@link Logger} with the specified name.
+     *
+     * @param   javaClass   the {@link Class}
+     * @return              the {@link Logger}
+     */
+    default L getLogger(Class<?> javaClass) {
+        return getLogger(javaClass.getName(), getDefaultLevel(), getDefaultClock());
+    }
+
+    /**
      * Get a {@link Logger} with the name of the calling class.
      *
      * @return          the {@link Logger}
