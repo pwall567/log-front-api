@@ -85,4 +85,29 @@ public class NullLogger implements Logger {
         // ignore
     }
 
+    @Override
+    public boolean isTraceEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isDebugEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isInfoEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isWarnEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isErrorEnabled() {
+        return false;
+    }
+
 }

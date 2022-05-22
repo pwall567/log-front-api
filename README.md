@@ -141,29 +141,30 @@ The `NullLoggerFactory` is an implementation of `LoggerFactory` that returns a `
 
 ### NullLogger
 
-A `NullLogger` is a `Logger` that outputs nothing &ndash; it includes null implementations of all the logging functions.
+A `NullLogger` is a `Logger` that outputs nothing &ndash; it includes null implementations of all the logging functions,
+along with implementations of the `isEnabled()` functions that always return `false`.
 
 ## Dependency Specification
 
-The latest version of the library is 1.1, and it may be obtained from the Maven Central repository.
+The latest version of the library is 1.2, and it may be obtained from the Maven Central repository.
 
 ### Maven
 ```xml
     <dependency>
       <groupId>net.pwall.log</groupId>
       <artifactId>log-front-api</artifactId>
-      <version>1.1</version>
+      <version>1.2</version>
     </dependency>
 ```
 ### Gradle
 ```groovy
-    implementation 'net.pwall.log:log-front-api:1.1'
+    implementation 'net.pwall.log:log-front-api:1.2'
 ```
 ### Gradle (kts)
 ```kotlin
-    implementation("net.pwall.log:log-front-api:1.1")
+    implementation("net.pwall.log:log-front-api:1.2")
 ```
 
 Peter Wall
 
-2022-05-10
+2022-05-22

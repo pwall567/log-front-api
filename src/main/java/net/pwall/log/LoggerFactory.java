@@ -31,11 +31,11 @@ import java.time.Clock;
  * The {@code LoggerFactory} supplies a {@link Logger} of a particular type.
  *
  * @author  Peter Wall
- * @param   <L>     the Logger type
+ * @param   <L>     the {@link Logger} type
  */
 public interface LoggerFactory<L extends Logger> {
 
-    String logPackageName = "net.pwall.log"; // must match the package of this interface
+    String logPackageName = LoggerFactory.class.getPackage().getName();
     Clock systemClock = Clock.systemDefaultZone();
 
     /**
@@ -81,7 +81,7 @@ public interface LoggerFactory<L extends Logger> {
     }
 
     /**
-     * Get a {@link Logger} with the specified {@link Class}, level and clock.
+     * Get a {@link Logger} with the specified {@link Class} name, level and clock.
      *
      * @param   javaClass   the {@link Class}
      * @param   level       the level
@@ -93,7 +93,7 @@ public interface LoggerFactory<L extends Logger> {
     }
 
     /**
-     * Get a {@link Logger} with the specified name and level.
+     * Get a {@link Logger} with the specified {@link Class} name and level.
      *
      * @param   javaClass   the {@link Class}
      * @param   level       the level
@@ -104,7 +104,7 @@ public interface LoggerFactory<L extends Logger> {
     }
 
     /**
-     * Get a {@link Logger} with the specified name and clock.
+     * Get a {@link Logger} with the specified {@link Class} name and clock.
      *
      * @param   javaClass   the {@link Class}
      * @param   clock       the clock
@@ -115,7 +115,7 @@ public interface LoggerFactory<L extends Logger> {
     }
 
     /**
-     * Get a {@link Logger} with the specified name.
+     * Get a {@link Logger} with the specified {@link Class} name.
      *
      * @param   javaClass   the {@link Class}
      * @return              the {@link Logger}
@@ -189,13 +189,12 @@ public interface LoggerFactory<L extends Logger> {
      * @return      the {@link StackTraceElement} for the caller
      */
     static StackTraceElement callerInfo() {
-        Throwable throwable = new Throwable();
-        StackTraceElement[] stack = throwable.getStackTrace();
-        for (int i = 2, n = stack.length; i < n; i++) {
-            StackTraceElement element = stack[i];
+        StackTraceElement[] callStack = (new Throwable()).getStackTrace();
+        int packageNameLength = logPackageName.length();
+        for (int i = 2, n = callStack.length; i < n; i++) {
+            StackTraceElement element = callStack[i];
             String className = element.getClassName();
-            int j = className.lastIndexOf('.');
-            if (j < 0 || !className.substring(0, j).equals(logPackageName))
+            if (className.lastIndexOf('.') != packageNameLength || !className.startsWith(logPackageName))
                 return element;
         }
         return new StackTraceElement("unknown", "unknown", null, -1);
