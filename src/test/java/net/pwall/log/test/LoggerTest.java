@@ -31,7 +31,9 @@ import java.time.ZoneOffset;
 
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import net.pwall.log.Level;
@@ -88,6 +90,13 @@ public class LoggerTest {
         Level level = logger.getLevel();
         logger.setLevel(Level.TRACE);
         assertEquals(level, logger.getLevel());
+    }
+
+    @Test
+    public void shouldTestEnabledUsingDynamicLevel() {
+        MockLogger mockLogger = new MockLogger("Cockatiel", Level.INFO, LoggerFactory.systemClock);
+        assertTrue(mockLogger.isEnabled(Level.INFO));
+        assertFalse(mockLogger.isEnabled(Level.DEBUG));
     }
 
 }

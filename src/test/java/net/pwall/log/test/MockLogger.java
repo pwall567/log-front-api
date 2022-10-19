@@ -99,10 +99,6 @@ public class MockLogger implements Logger {
         sb.append(name).append(" ERROR ").append(message).append(" : ").append(throwable.getMessage()).append('\n');
     }
 
-    public void reset() {
-        sb.setLength(0);
-    }
-
     public String getContents() {
         return sb.toString();
     }

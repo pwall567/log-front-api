@@ -168,6 +168,16 @@ public interface Logger {
     }
 
     /**
+     * Test whether the specified level is enabled for this {@code Logger}.
+     *
+     * @param   level   the {@link Level}
+     * @return          {@code true} if output of the specified level is enabled
+     */
+    default boolean isEnabled(Level level) {
+        return getLevel().ordinal() <= level.ordinal();
+    }
+
+    /**
      * Output a trace message supplied by a {@link Supplier} function.  The function will only be called if the logging
      * level is enabled.
      *

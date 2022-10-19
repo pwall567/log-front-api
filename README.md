@@ -102,11 +102,13 @@ The `Logger` interface specifies a number of logging operations related to the d
 - `void warn(Object message)`
 - `void error(Object message)`
 - `void error(Throwable throwable, Object message)`
+- `void log(Level level, Object message)`
 
 The message is specified as being of type `Object`, and may be nullable &ndash; in most cases it will be converted to
 `String` by `String.valueOf(message)` (or equivalent), but that is dependent on the implementation.
-The last function takes a `Throwable` as well as the message; how the `Throwable` is handled also depends on the
-implementation.
+The second `error` function takes a `Throwable` as well as the message; how the `Throwable` is handled also depends on
+the implementation.
+The last function in the list allows the level to be specified as a parameter.
 
 There are also tests for the logging level of the `Logger`:
 
@@ -115,6 +117,7 @@ There are also tests for the logging level of the `Logger`:
 - `boolean isInfoEnabled()`
 - `boolean isWarnEnabled()`
 - `boolean isErrorEnabled()`
+- `boolean isEnabled(Level level)`
 
 The default implementations of these functions use the level in the `Logger`, not in the underlying implementation, so
 unless the level is kept in sync with the implementation, the tests are not likely to be useful in that form, and must
@@ -123,8 +126,8 @@ be overridden.
 Lastly, there are a set logging functions that take a `Supplier<Object>` lambda parameter.
 These all have default implementations that call the appropriate `isXxxxEnabled()` function, and only if true, invoke
 lambda to create the message object.
-This is recommended means of logging complex messages, but avoiding the cost of creating the message if it is not going
-to be used.
+This is recommended means of logging complex messages, avoiding the cost of creating the message if it is not going to
+be used.
 
 - `void trace(Supplier<Object> messageSupplier)`
 - `void debug(Supplier<Object> messageSupplier)`
@@ -132,6 +135,7 @@ to be used.
 - `void warn(Supplier<Object> messageSupplier)`
 - `void error(Supplier<Object> messageSupplier)`
 - `void error(Throwable throwable, Supplier<Object> messageSupplier)`
+- `void log(Level level, Supplier<Object> messageSupplier)`
 
 As with the other `error` function, there is a version that takes a `Throwable`.
 
@@ -146,25 +150,25 @@ along with implementations of the `isEnabled()` functions that always return `fa
 
 ## Dependency Specification
 
-The latest version of the library is 1.2, and it may be obtained from the Maven Central repository.
+The latest version of the library is 1.3, and it may be obtained from the Maven Central repository.
 
 ### Maven
 ```xml
     <dependency>
       <groupId>net.pwall.log</groupId>
       <artifactId>log-front-api</artifactId>
-      <version>1.2</version>
+      <version>1.3</version>
     </dependency>
 ```
 ### Gradle
 ```groovy
-    implementation 'net.pwall.log:log-front-api:1.2'
+    implementation 'net.pwall.log:log-front-api:1.3'
 ```
 ### Gradle (kts)
 ```kotlin
-    implementation("net.pwall.log:log-front-api:1.2")
+    implementation("net.pwall.log:log-front-api:1.3")
 ```
 
 Peter Wall
 
-2022-05-22
+2022-10-19

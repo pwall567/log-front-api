@@ -2,6 +2,10 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [1.3] - 2022-10-19
+### Changed
+- `Logger`, `NullLogger`: added `isEnabled` for use with dynamic log level
+
 ## [1.2] - 2022-05-22
 ### Changed
 - `LoggerFactory`: minor optimisations

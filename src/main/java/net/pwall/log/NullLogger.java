@@ -86,6 +86,11 @@ public class NullLogger implements Logger {
     }
 
     @Override
+    public void log(Level level, Object message) {
+        // ignore
+    }
+
+    @Override
     public boolean isTraceEnabled() {
         return false;
     }
@@ -107,6 +112,11 @@ public class NullLogger implements Logger {
 
     @Override
     public boolean isErrorEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled(Level level) {
         return false;
     }
 
