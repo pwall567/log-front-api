@@ -1,8 +1,8 @@
 # log-front-api
 
-[![Build Status](https://travis-ci.com/pwall567/log-front-api.svg?branch=main)](https://app.travis-ci.com/github/pwall567/log-front-api)
+[![Build Status](https://github.com/pwall567/log-front-api/actions/workflows/build.yml/badge.svg)](https://github.com/pwall567/log-front-api/actions/workflows/build.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Maven Central](https://img.shields.io/maven-central/v/net.pwall.log/log-front-api?label=Maven%20Central)](https://search.maven.org/search?q=g:%22net.pwall.log%22%20AND%20a:%22log-front-api%22)
+[![Maven Central](https://img.shields.io/maven-central/v/io.jstuff/log-front-api?label=Maven%20Central)](https://search.maven.org/search?q=g:%22io.jstuff%22%20AND%20a:%22log-front-api%22)
 
 Logging Interface API
 
@@ -32,8 +32,8 @@ parameter or by dependency injection, and it can then use this to create `Logger
 operations.
 
 ```java
-import net.pwall.log.Logger;
-import net.pwall.log.LoggerFactory;
+import io.jstuff.log.Logger;
+import io.jstuff.log.LoggerFactory;
 
 public class ClassThatLogs {
     private final Logger log;
@@ -150,25 +150,25 @@ along with implementations of the `isEnabled()` functions that always return `fa
 
 ## Dependency Specification
 
-The latest version of the library is 1.3, and it may be obtained from the Maven Central repository.
+The latest version of the library is 2.0, and it may be obtained from the Maven Central repository.
 
 ### Maven
 ```xml
     <dependency>
-      <groupId>net.pwall.log</groupId>
+      <groupId>io.jstuff</groupId>
       <artifactId>log-front-api</artifactId>
-      <version>1.3</version>
+      <version>2.0</version>
     </dependency>
 ```
 ### Gradle
 ```groovy
-    implementation 'net.pwall.log:log-front-api:1.3'
+    implementation 'io.jstuff:log-front-api:2.0'
 ```
 ### Gradle (kts)
 ```kotlin
-    implementation("net.pwall.log:log-front-api:1.3")
+    implementation("io.jstuff:log-front-api:2.0")
 ```
 
 Peter Wall
 
-2022-10-19
+2025-01-29

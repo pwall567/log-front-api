@@ -1,5 +1,5 @@
 /*
- * @(#) Level.java
+ * @(#) MockLoggerFactory.java
  *
  * log-front-api  Logging Interface API
  * Copyright (c) 2022 Peter Wall
@@ -23,17 +23,18 @@
  * SOFTWARE.
  */
 
-package net.pwall.log;
+package io.jstuff.log.test;
 
-/**
- * The logging level.
- *
- * @author  Peter Wall
- */
-public enum Level {
-    TRACE,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR
+import java.time.Clock;
+
+import io.jstuff.log.Level;
+import io.jstuff.log.LoggerFactory;
+
+public class MockLoggerFactory implements LoggerFactory<MockLogger> {
+
+    @Override
+    public MockLogger getLogger(String name, Level level, Clock clock) {
+        return new MockLogger(name, level, clock);
+    }
+
 }

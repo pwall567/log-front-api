@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-package net.pwall.log;
+package io.jstuff.log;
 
 import java.time.Clock;
 

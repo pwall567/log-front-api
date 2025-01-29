@@ -2,6 +2,15 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [2.0] - 2025-01-29
+### Added
+- `build.yml`, `deploy.yml`: converted project to GitHub Actions
+### Changed
+- `pom.xml`: updated plugin versions
+- `pom.xml`: moved to `io.jstuff` (package amd Maven group)
+### Removed
+- `.travis.yml`
+
 ## [1.3] - 2022-10-19
 ### Changed
 - `Logger`, `NullLogger`: added `isEnabled` for use with dynamic log level

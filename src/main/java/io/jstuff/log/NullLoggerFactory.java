@@ -1,5 +1,5 @@
 /*
- * @(#) NullLoggerTest.java
+ * @(#) NullLoggerFactory.java
  *
  * log-front-api  Logging Interface API
  * Copyright (c) 2022 Peter Wall
@@ -23,21 +23,28 @@
  * SOFTWARE.
  */
 
-package net.pwall.log.test;
+package io.jstuff.log;
 
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import java.time.Clock;
 
-import net.pwall.log.Logger;
-import net.pwall.log.NullLoggerFactory;
+/**
+ * A null implementation of the {@link LoggerFactory} interface.
+ *
+ * @author  Peter Wall
+ */
+public class NullLoggerFactory implements LoggerFactory<NullLogger> {
 
-public class NullLoggerTest {
-
-    @Test
-    public void shouldCreateNullLogger() {
-        NullLoggerFactory nullLoggerFactory = new NullLoggerFactory();
-        Logger logger = nullLoggerFactory.getLogger();
-        assertEquals("net.pwall.log.test.NullLoggerTest", logger.getName());
+    /**
+     * Get a {@link NullLogger} with the specified name, level and clock.
+     *
+     * @param   name    the name
+     * @param   level   the level (ignored)
+     * @param   clock   the clock (ignored)
+     * @return          the {@link NullLogger}
+     */
+    @Override
+    public NullLogger getLogger(String name, Level level, Clock clock) {
+        return new NullLogger(name);
     }
 
 }

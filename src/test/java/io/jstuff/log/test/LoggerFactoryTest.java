@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-package net.pwall.log.test;
+package io.jstuff.log.test;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -33,13 +33,13 @@ import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
-import net.pwall.log.Level;
-import net.pwall.log.Logger;
-import net.pwall.log.LoggerFactory;
+import io.jstuff.log.Level;
+import io.jstuff.log.Logger;
+import io.jstuff.log.LoggerFactory;
 
 public class LoggerFactoryTest {
 
-    private static final String qualifiedClassName = "net.pwall.log.test.LoggerFactoryTest";
+    private static final String qualifiedClassName = "io.jstuff.log.test.LoggerFactoryTest";
 
     @Test
     public void shouldCreateLoggerWithSpecifiedName() {

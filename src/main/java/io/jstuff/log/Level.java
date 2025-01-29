@@ -1,5 +1,5 @@
 /*
- * @(#) NullLoggerFactory.java
+ * @(#) Level.java
  *
  * log-front-api  Logging Interface API
  * Copyright (c) 2022 Peter Wall
@@ -23,28 +23,17 @@
  * SOFTWARE.
  */
 
-package net.pwall.log;
-
-import java.time.Clock;
+package io.jstuff.log;
 
 /**
- * A null implementation of the {@link LoggerFactory} interface.
+ * The logging level.
  *
  * @author  Peter Wall
  */
-public class NullLoggerFactory implements LoggerFactory<NullLogger> {
-
-    /**
-     * Get a {@link NullLogger} with the specified name, level and clock.
-     *
-     * @param   name    the name
-     * @param   level   the level (ignored)
-     * @param   clock   the clock (ignored)
-     * @return          the {@link NullLogger}
-     */
-    @Override
-    public NullLogger getLogger(String name, Level level, Clock clock) {
-        return new NullLogger(name);
-    }
-
+public enum Level {
+    TRACE,
+    DEBUG,
+    INFO,
+    WARN,
+    ERROR
 }

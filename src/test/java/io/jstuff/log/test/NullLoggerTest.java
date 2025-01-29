@@ -1,5 +1,5 @@
 /*
- * @(#) MockLoggerFactory.java
+ * @(#) NullLoggerTest.java
  *
  * log-front-api  Logging Interface API
  * Copyright (c) 2022 Peter Wall
@@ -23,18 +23,21 @@
  * SOFTWARE.
  */
 
-package net.pwall.log.test;
+package io.jstuff.log.test;
 
-import java.time.Clock;
+import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
-import net.pwall.log.Level;
-import net.pwall.log.LoggerFactory;
+import io.jstuff.log.Logger;
+import io.jstuff.log.NullLoggerFactory;
 
-public class MockLoggerFactory implements LoggerFactory<MockLogger> {
+public class NullLoggerTest {
 
-    @Override
-    public MockLogger getLogger(String name, Level level, Clock clock) {
-        return new MockLogger(name, level, clock);
+    @Test
+    public void shouldCreateNullLogger() {
+        NullLoggerFactory nullLoggerFactory = new NullLoggerFactory();
+        Logger logger = nullLoggerFactory.getLogger();
+        assertEquals("io.jstuff.log.test.NullLoggerTest", logger.getName());
     }
 
 }

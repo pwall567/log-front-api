@@ -1,5 +1,5 @@
 /*
- * @(#) MockLogger.java
+ * @(#) NullLogger.java
  *
  * log-front-api  Logging Interface API
  * Copyright (c) 2022 Peter Wall
@@ -23,84 +23,101 @@
  * SOFTWARE.
  */
 
-package net.pwall.log.test;
+package io.jstuff.log;
 
-import java.time.Clock;
+import java.util.Objects;
 
-import net.pwall.log.Level;
-import net.pwall.log.Logger;
+/**
+ * A null implementation of the {@link Logger} interface (logs nothing).
+ *
+ * @author  Peter Wall
+ */
+public class NullLogger implements Logger {
 
-public class MockLogger implements Logger {
-
-    private final StringBuilder sb;
     private final String name;
-    private Level level;
-    private Clock clock;
 
-    public MockLogger(String name, Level level, Clock clock) {
-        this.name = name;
-        this.level = level;
-        this.clock = clock;
-        sb = new StringBuilder();
+    /**
+     * Construct a {@code NullLogger} with the specified name.
+     *
+     * @param   name    the name
+     */
+    public NullLogger(String name) {
+        this.name = Objects.requireNonNull(name, "NullLogger name must not be null");
     }
 
+    /**
+     * Get the name associated with this {@code Logger}.
+     *
+     * @return      the name
+     */
     @Override
     public String getName() {
         return name;
     }
 
     @Override
-    public Level getLevel() {
-        return level;
-    }
-
-    @Override
-    public void setLevel(Level level) {
-        this.level = level;
-    }
-
-    @Override
-    public Clock getClock() {
-        return clock;
-    }
-
-    @Override
-    public void setClock(Clock clock) {
-        this.clock = clock;
-    }
-
-    @Override
     public void trace(Object message) {
-        sb.append(name).append(" TRACE ").append(message).append('\n');
+        // ignore
     }
 
     @Override
     public void debug(Object message) {
-        sb.append(name).append(" DEBUG ").append(message).append('\n');
+        // ignore
     }
 
     @Override
     public void info(Object message) {
-        sb.append(name).append(" INFO ").append(message).append('\n');
+        // ignore
     }
 
     @Override
     public void warn(Object message) {
-        sb.append(name).append(" WARN ").append(message).append('\n');
+        // ignore
     }
 
     @Override
     public void error(Object message) {
-        sb.append(name).append(" ERROR ").append(message).append('\n');
+        // ignore
     }
 
     @Override
     public void error(Throwable throwable, Object message) {
-        sb.append(name).append(" ERROR ").append(message).append(" : ").append(throwable.getMessage()).append('\n');
+        // ignore
     }
 
-    public String getContents() {
-        return sb.toString();
+    @Override
+    public void log(Level level, Object message) {
+        // ignore
+    }
+
+    @Override
+    public boolean isTraceEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isDebugEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isInfoEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isWarnEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isErrorEnabled() {
+        return false;
+    }
+
+    @Override
+    public boolean isEnabled(Level level) {
+        return false;
     }
 
 }

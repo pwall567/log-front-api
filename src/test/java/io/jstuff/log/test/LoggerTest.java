@@ -23,7 +23,7 @@
  * SOFTWARE.
  */
 
-package net.pwall.log.test;
+package io.jstuff.log.test;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -36,10 +36,10 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import net.pwall.log.Level;
-import net.pwall.log.Logger;
-import net.pwall.log.LoggerFactory;
-import net.pwall.log.NullLogger;
+import io.jstuff.log.Level;
+import io.jstuff.log.Logger;
+import io.jstuff.log.LoggerFactory;
+import io.jstuff.log.NullLogger;
 
 public class LoggerTest {
 
