@@ -1,8 +1,8 @@
 /*
- * @(#) NullLoggerFactory.java
+ * @(#) LoggerExceptionTest.java
  *
  * log-front-api  Logging Interface API
- * Copyright (c) 2022, 2025 Peter Wall
+ * Copyright (c) 2025 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,30 +23,27 @@
  * SOFTWARE.
  */
 
-package io.jstuff.log;
+package io.jstuff.log.test;
 
-import java.time.Clock;
+import io.jstuff.log.LoggerException;
+import org.junit.Test;
 
-/**
- * A null implementation of the {@link LoggerFactory} interface.
- *
- * @author  Peter Wall
- */
-public class NullLoggerFactory implements LoggerFactory<NullLogger> {
+import static org.junit.Assert.assertEquals;
 
-    /**
-     * Get a {@link NullLogger} with the specified name, level and clock.
-     *
-     * @param   name    the name
-     * @param   level   the level (ignored)
-     * @param   clock   the clock (ignored)
-     * @return          the {@link NullLogger}
-     * @throws  LoggerException if the name is {@code null} or contains illegal (non-ASCII) characters
-     */
-    @Override
-    public NullLogger getLogger(String name, Level level, Clock clock) {
-        LoggerFactory.validateLoggerName(name);
-        return new NullLogger(name);
+public class LoggerExceptionTest {
+
+    @Test
+    public void shouldCreateLoggerException() {
+        LoggerException loggerException = new LoggerException("Test message");
+        assertEquals("Test message", loggerException.getMessage());
+    }
+
+    @Test
+    public void shouldCreateLoggerExceptionWithCause() {
+        RuntimeException cause = new RuntimeException("Nested");
+        LoggerException loggerException = new LoggerException("Test message", cause);
+        assertEquals("Test message", loggerException.getMessage());
+        assertEquals(cause, loggerException.getCause());
     }
 
 }

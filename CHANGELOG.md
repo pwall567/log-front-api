@@ -2,6 +2,14 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [2.1] - 2025-02-23
+### Added
+- `LoggerException`: exception class for exceptions thrown within the library
+### Changed
+- `LoggerFactory`: added function to check logger name
+- `NullLoggerFactory`: added check of logger name
+- `README.md`: major improvements
+
 ## [2.0] - 2025-01-29
 ### Added
 - `build.yml`, `deploy.yml`: converted project to GitHub Actions

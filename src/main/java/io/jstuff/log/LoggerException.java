@@ -1,8 +1,8 @@
 /*
- * @(#) NullLoggerFactory.java
+ * @(#) LoggerException.java
  *
  * log-front-api  Logging Interface API
- * Copyright (c) 2022, 2025 Peter Wall
+ * Copyright (c) 2020, 2021, 2022, 2025 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,28 +25,19 @@
 
 package io.jstuff.log;
 
-import java.time.Clock;
-
 /**
- * A null implementation of the {@link LoggerFactory} interface.
+ * Parent class for exceptions thrown by library.
  *
  * @author  Peter Wall
  */
-public class NullLoggerFactory implements LoggerFactory<NullLogger> {
+public class LoggerException extends RuntimeException {
 
-    /**
-     * Get a {@link NullLogger} with the specified name, level and clock.
-     *
-     * @param   name    the name
-     * @param   level   the level (ignored)
-     * @param   clock   the clock (ignored)
-     * @return          the {@link NullLogger}
-     * @throws  LoggerException if the name is {@code null} or contains illegal (non-ASCII) characters
-     */
-    @Override
-    public NullLogger getLogger(String name, Level level, Clock clock) {
-        LoggerFactory.validateLoggerName(name);
-        return new NullLogger(name);
+    public LoggerException(String message) {
+        super(message);
+    }
+
+    public LoggerException(String message, Throwable cause) {
+        super(message, cause);
     }
 
 }

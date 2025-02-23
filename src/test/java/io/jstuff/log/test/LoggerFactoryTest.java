@@ -2,7 +2,7 @@
  * @(#) LoggerFactoryTest.java
  *
  * log-front-api  Logging Interface API
- * Copyright (c) 2022 Peter Wall
+ * Copyright (c) 2022, 2025 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,9 +29,11 @@ import java.time.Clock;
 import java.time.Instant;
 import java.time.ZoneOffset;
 
+import io.jstuff.log.LoggerException;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.assertThrows;
 
 import io.jstuff.log.Level;
 import io.jstuff.log.Logger;
@@ -153,6 +155,20 @@ public class LoggerFactoryTest {
         assertEquals(qualifiedClassName, logger.getName());
         assertEquals(Level.DEBUG, logger.getLevel());
         assertSame(fixedClock, logger.getClock());
+    }
+
+    @Test
+    public void shouldValidateLoggerName() {
+        LoggerFactory.validateLoggerName("abc");
+        LoggerFactory.validateLoggerName("A more complex name");
+        //noinspection DataFlowIssue
+        LoggerException exception = assertThrows(LoggerException.class, () -> LoggerFactory.validateLoggerName(null));
+        assertEquals("Logger name must not be null", exception.getMessage());
+        exception = assertThrows(LoggerException.class, () -> LoggerFactory.validateLoggerName(""));
+        assertEquals("Logger name must not be empty", exception.getMessage());
+        //noinspection UnnecessaryUnicodeEscape
+        exception = assertThrows(LoggerException.class, () -> LoggerFactory.validateLoggerName("Touch\u00E9"));
+        assertEquals("Illegal character in Logger name", exception.getMessage());
     }
 
 }

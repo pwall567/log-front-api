@@ -2,7 +2,7 @@
  * @(#) LoggerFactory.java
  *
  * log-front-api  Logging Interface API
- * Copyright (c) 2022 Peter Wall
+ * Copyright (c) 2022, 2025 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -198,6 +198,25 @@ public interface LoggerFactory<L extends Logger> {
                 return element;
         }
         return new StackTraceElement("unknown", "unknown", null, -1);
+    }
+
+    /**
+     * Check that the name is non-null, and contains only ASCII 90x20..0x7E) characters.
+     *
+     * @param   name    the name to be checked
+     * @throws  LoggerException if the name is {@code null} or contains illegal (non-ASCII) characters
+     */
+    static void validateLoggerName(String name) {
+        if (name == null)
+            throw new LoggerException("Logger name must not be null");
+        int n = name.length();
+        if (n == 0)
+            throw new LoggerException("Logger name must not be empty");
+        for (int i = 0; i < n; i++) {
+            char ch = name.charAt(i);
+            if (ch < ' ' || ch > 0x7E)
+                throw new LoggerException("Illegal character in Logger name");
+        }
     }
 
 }
