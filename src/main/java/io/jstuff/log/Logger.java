@@ -2,7 +2,7 @@
  * @(#) Logger.java
  *
  * log-front-api  Logging Interface API
- * Copyright (c) 2022 Peter Wall
+ * Copyright (c) 2022, 2025 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -26,6 +26,7 @@
 package io.jstuff.log;
 
 import java.time.Clock;
+import java.time.Instant;
 import java.util.function.Supplier;
 
 /**
@@ -87,11 +88,31 @@ public interface Logger {
     void trace(Object message);
 
     /**
+     * Output a trace message, specifying the time as an {@link Instant} (the default implementation ignores the time).
+     *
+     * @param   time        the time
+     * @param   message     the message
+     */
+     default void trace(Instant time, Object message) {
+         trace(message);
+     }
+
+    /**
      * Output a debug message.
      *
      * @param   message     the message
      */
     void debug(Object message);
+
+    /**
+     * Output a debug message, specifying the time as an {@link Instant} (the default implementation ignores the time).
+     *
+     * @param   time        the time
+     * @param   message     the message
+     */
+    default void debug(Instant time, Object message) {
+        debug(message);
+    }
 
     /**
      * Output an info message.
@@ -101,6 +122,16 @@ public interface Logger {
     void info(Object message);
 
     /**
+     * Output an info message, specifying the time as an {@link Instant} (the default implementation ignores the time).
+     *
+     * @param   time        the time
+     * @param   message     the message
+     */
+    default void info(Instant time, Object message) {
+        info(message);
+    }
+
+    /**
      * Output a warning message.
      *
      * @param   message     the message
@@ -108,11 +139,32 @@ public interface Logger {
     void warn(Object message);
 
     /**
+     * Output a warning message, specifying the time as an {@link Instant} (the default implementation ignores the
+     * time).
+     *
+     * @param   time        the time
+     * @param   message     the message
+     */
+    default void warn(Instant time, Object message) {
+        warn(message);
+    }
+
+    /**
      * Output an error message.
      *
      * @param   message     the message
      */
     void error(Object message);
+
+    /**
+     * Output an error message, specifying the time as an {@link Instant} (the default implementation ignores the time).
+     *
+     * @param   time        the time
+     * @param   message     the message
+     */
+    default void error(Instant time, Object message) {
+        error(message);
+    }
 
     /**
      * Output an error message along with a {@link Throwable}.
@@ -123,12 +175,24 @@ public interface Logger {
     void error(Throwable throwable, Object message);
 
     /**
+     * Output an error message along with a {@link Throwable}, specifying the time as an {@link Instant} (the default
+     * implementation ignores the time).
+     *
+     * @param   time        the time
+     * @param   throwable   the {@link Throwable}
+     * @param   message     the message
+     */
+    default void error(Instant time, Throwable throwable, Object message) {
+        error(throwable, message);
+    }
+
+    /**
      * Test whether trace output is enabled for this {@code Logger}.
      *
      * @return      {@code true} if trace output is enabled
      */
     default boolean isTraceEnabled() {
-        return getLevel().ordinal() <= Level.TRACE.ordinal();
+        return getLevel().isEnabled(Level.TRACE);
     }
 
     /**
@@ -137,7 +201,7 @@ public interface Logger {
      * @return      {@code true} if debug output is enabled
      */
     default boolean isDebugEnabled() {
-        return getLevel().ordinal() <= Level.DEBUG.ordinal();
+        return getLevel().isEnabled(Level.DEBUG);
     }
 
     /**
@@ -146,7 +210,7 @@ public interface Logger {
      * @return      {@code true} if info output is enabled
      */
     default boolean isInfoEnabled() {
-        return getLevel().ordinal() <= Level.INFO.ordinal();
+        return getLevel().isEnabled(Level.INFO);
     }
 
     /**
@@ -155,7 +219,7 @@ public interface Logger {
      * @return      {@code true} if warning output is enabled
      */
     default boolean isWarnEnabled() {
-        return getLevel().ordinal() <= Level.WARN.ordinal();
+        return getLevel().isEnabled(Level.WARN);
     }
 
     /**
@@ -164,7 +228,7 @@ public interface Logger {
      * @return      {@code true} if error output is enabled
      */
     default boolean isErrorEnabled() {
-        return getLevel().ordinal() <= Level.ERROR.ordinal();
+        return getLevel().isEnabled(Level.ERROR);
     }
 
     /**
@@ -174,11 +238,11 @@ public interface Logger {
      * @return          {@code true} if output of the specified level is enabled
      */
     default boolean isEnabled(Level level) {
-        return getLevel().ordinal() <= level.ordinal();
+        return getLevel().isEnabled(level);
     }
 
     /**
-     * Output a trace message supplied by a {@link Supplier} function.  The function will only be called if the logging
+     * Output a trace message supplied by a {@link Supplier} function.  The function will be called only if the logging
      * level is enabled.
      *
      * @param   messageSupplier     the message supplier
@@ -189,7 +253,19 @@ public interface Logger {
     }
 
     /**
-     * Output a debug message supplied by a {@link Supplier} function.  The function will only be called if the logging
+     * Output a trace message supplied by a {@link Supplier} function, specifying the time as an {@link Instant} (the
+     * default implementation ignores the time).  The function will be called only if the logging level is enabled.
+     *
+     * @param   time                the time
+     * @param   messageSupplier     the message supplier
+     */
+    default void trace(Instant time, Supplier<Object> messageSupplier) {
+        if (isTraceEnabled())
+            trace(time, messageSupplier.get());
+    }
+
+    /**
+     * Output a debug message supplied by a {@link Supplier} function.  The function will be called only if the logging
      * level is enabled.
      *
      * @param   messageSupplier     the message supplier
@@ -200,7 +276,19 @@ public interface Logger {
     }
 
     /**
-     * Output an info message supplied by a {@link Supplier} function.  The function will only be called if the logging
+     * Output a debug message supplied by a {@link Supplier} function, specifying the time as an {@link Instant} (the
+     * default implementation ignores the time).  The function will be called only if the logging level is enabled.
+     *
+     * @param   time                the time
+     * @param   messageSupplier     the message supplier
+     */
+    default void debug(Instant time, Supplier<Object> messageSupplier) {
+        if (isDebugEnabled())
+            debug(time, messageSupplier.get());
+    }
+
+    /**
+     * Output an info message supplied by a {@link Supplier} function.  The function will be called only if the logging
      * level is enabled.
      *
      * @param   messageSupplier     the message supplier
@@ -211,7 +299,19 @@ public interface Logger {
     }
 
     /**
-     * Output a warning message supplied by a {@link Supplier} function.  The function will only be called if the
+     * Output an info message supplied by a {@link Supplier} function, specifying the time as an {@link Instant} (the
+     * default implementation ignores the time).  The function will be called only if the logging level is enabled.
+     *
+     * @param   time                the time
+     * @param   messageSupplier     the message supplier
+     */
+    default void info(Instant time, Supplier<Object> messageSupplier) {
+        if (isInfoEnabled())
+            info(time, messageSupplier.get());
+    }
+
+    /**
+     * Output a warning message supplied by a {@link Supplier} function.  The function will be called only if the
      * logging level is enabled.
      *
      * @param   messageSupplier     the message supplier
@@ -222,7 +322,19 @@ public interface Logger {
     }
 
     /**
-     * Output an error message supplied by a {@link Supplier} function.  The function will only be called if the logging
+     * Output a warning message supplied by a {@link Supplier} function, specifying the time as an {@link Instant} (the
+     * default implementation ignores the time).  The function will be called only if the logging level is enabled.
+     *
+     * @param   time                the time
+     * @param   messageSupplier     the message supplier
+     */
+    default void warn(Instant time, Supplier<Object> messageSupplier) {
+        if (isWarnEnabled())
+            warn(time, messageSupplier.get());
+    }
+
+    /**
+     * Output an error message supplied by a {@link Supplier} function.  The function will be called only if the logging
      * level is enabled.
      *
      * @param   messageSupplier     the message supplier
@@ -233,8 +345,20 @@ public interface Logger {
     }
 
     /**
+     * Output an error message supplied by a {@link Supplier} function, specifying the time as an {@link Instant} (the
+     * default implementation ignores the time).  The function will be called only if the logging level is enabled.
+     *
+     * @param   time                the time
+     * @param   messageSupplier     the message supplier
+     */
+    default void error(Instant time, Supplier<Object> messageSupplier) {
+        if (isErrorEnabled())
+            error(time, messageSupplier.get());
+    }
+
+    /**
      * Output an error message supplied by a {@link Supplier} function, along with a {@link Throwable}.  The function
-     * will only be called if the logging level is enabled.
+     * will be called only if the logging level is enabled.
      *
      * @param   messageSupplier     the message supplier
      * @param   throwable           the {@link Throwable}
@@ -242,6 +366,20 @@ public interface Logger {
     default void error(Throwable throwable, Supplier<Object> messageSupplier) {
         if (isErrorEnabled())
             error(throwable, messageSupplier.get());
+    }
+
+    /**
+     * Output an error message supplied by a {@link Supplier} function, specifying the time as an {@link Instant} (the
+     * default implementation ignores the time), along with a {@link Throwable}.  The function will be called only if
+     * the logging level is enabled.
+     *
+     * @param   time                the time
+     * @param   messageSupplier     the message supplier
+     * @param   throwable           the {@link Throwable}
+     */
+    default void error(Instant time, Throwable throwable, Supplier<Object> messageSupplier) {
+        if (isErrorEnabled())
+            error(time, throwable, messageSupplier.get());
     }
 
     /**
@@ -270,8 +408,35 @@ public interface Logger {
     }
 
     /**
-     * Output a message supplied by a {@link Supplier} function, with a variable level.  The function will only be
-     * called if the logging level is enabled.
+     * Output a message with a variable level, specifying the time as an {@link Instant} (the default implementation
+     * ignores the time).
+     *
+     * @param   time                the time
+     * @param   level       the {@link Level}
+     * @param   message     the message (will be output using {@link Object#toString() toString()}
+     */
+    default void log(Instant time, Level level, Object message) {
+        switch (level) {
+        case TRACE:
+            trace(time, message);
+            break;
+        case DEBUG:
+            debug(time, message);
+            break;
+        case INFO:
+            info(time, message);
+            break;
+        case WARN:
+            warn(time, message);
+            break;
+        case ERROR:
+            error(time, message);
+        }
+    }
+
+    /**
+     * Output a message supplied by a {@link Supplier} function, with a variable level.  The function will be called
+     * only if the logging level is enabled.
      *
      * @param   level               the {@link Level}
      * @param   messageSupplier     the message supplier
@@ -292,6 +457,34 @@ public interface Logger {
             break;
         case ERROR:
             error(messageSupplier);
+        }
+    }
+
+    /**
+     * Output a message supplied by a {@link Supplier} function, with a variable level, specifying the time as an
+     * {@link Instant} (the default implementation ignores the time).  The function will be called only if the logging
+     * level is enabled.
+     *
+     * @param   time                the time
+     * @param   level               the {@link Level}
+     * @param   messageSupplier     the message supplier
+     */
+    default void log(Instant time, Level level, Supplier<Object> messageSupplier) {
+        switch (level) {
+        case TRACE:
+            trace(time, messageSupplier);
+            break;
+        case DEBUG:
+            debug(time, messageSupplier);
+            break;
+        case INFO:
+            info(time, messageSupplier);
+            break;
+        case WARN:
+            warn(time, messageSupplier);
+            break;
+        case ERROR:
+            error(time, messageSupplier);
         }
     }
 

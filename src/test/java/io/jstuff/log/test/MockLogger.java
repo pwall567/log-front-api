@@ -2,7 +2,7 @@
  * @(#) MockLogger.java
  *
  * log-front-api  Logging Interface API
- * Copyright (c) 2022 Peter Wall
+ * Copyright (c) 2022, 2025 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,10 +25,15 @@
 
 package io.jstuff.log.test;
 
+import java.io.IOException;
 import java.time.Clock;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
 
 import io.jstuff.log.Level;
 import io.jstuff.log.Logger;
+import io.jstuff.util.DateOutput;
 
 public class MockLogger implements Logger {
 
@@ -75,8 +80,22 @@ public class MockLogger implements Logger {
     }
 
     @Override
+    public void trace(Instant time, Object message) {
+        sb.append(name).append(" TRACE@");
+        appendTime(sb, time);
+        sb.append(' ').append(message).append('\n');
+    }
+
+    @Override
     public void debug(Object message) {
         sb.append(name).append(" DEBUG ").append(message).append('\n');
+    }
+
+    @Override
+    public void debug(Instant time, Object message) {
+        sb.append(name).append(" DEBUG@");
+        appendTime(sb, time);
+        sb.append(' ').append(message).append('\n');
     }
 
     @Override
@@ -85,8 +104,22 @@ public class MockLogger implements Logger {
     }
 
     @Override
+    public void info(Instant time, Object message) {
+        sb.append(name).append(" INFO@");
+        appendTime(sb, time);
+        sb.append(' ').append(message).append('\n');
+    }
+
+    @Override
     public void warn(Object message) {
         sb.append(name).append(" WARN ").append(message).append('\n');
+    }
+
+    @Override
+    public void warn(Instant time, Object message) {
+        sb.append(name).append(" WARN@");
+        appendTime(sb, time);
+        sb.append(' ').append(message).append('\n');
     }
 
     @Override
@@ -95,12 +128,35 @@ public class MockLogger implements Logger {
     }
 
     @Override
+    public void error(Instant time, Object message) {
+        sb.append(name).append(" ERROR@");
+        appendTime(sb, time);
+        sb.append(' ').append(message).append('\n');
+    }
+
+    @Override
     public void error(Throwable throwable, Object message) {
         sb.append(name).append(" ERROR ").append(message).append(" : ").append(throwable.getMessage()).append('\n');
     }
 
+    @Override
+    public void error(Instant time, Throwable throwable, Object message) {
+        sb.append(name).append(" ERROR@");
+        appendTime(sb, time);
+        sb.append(' ').append(message).append(" : ").append(throwable.getMessage()).append('\n');
+    }
+
     public String getContents() {
         return sb.toString();
+    }
+
+    private static void appendTime(StringBuilder sb, Instant time) {
+        try {
+            DateOutput.appendOffsetDateTime(sb, OffsetDateTime.ofInstant(time, ZoneId.of("Australia/Sydney")));
+        }
+        catch (IOException ignore) {
+            // can't happen - StringBuilder doesn't throw exception
+        }
     }
 
 }

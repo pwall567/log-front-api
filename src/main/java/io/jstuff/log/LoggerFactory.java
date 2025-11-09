@@ -201,7 +201,7 @@ public interface LoggerFactory<L extends Logger> {
     }
 
     /**
-     * Check that the name is non-null, and contains only ASCII 90x20..0x7E) characters.
+     * Check that the name is non-null, and contains only ASCII (0x20..0x7E) characters.
      *
      * @param   name    the name to be checked
      * @throws  LoggerException if the name is {@code null} or contains illegal (non-ASCII) characters

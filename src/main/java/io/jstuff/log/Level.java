@@ -2,7 +2,7 @@
  * @(#) Level.java
  *
  * log-front-api  Logging Interface API
- * Copyright (c) 2022 Peter Wall
+ * Copyright (c) 2022, 2025 Peter Wall
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -35,5 +35,10 @@ public enum Level {
     DEBUG,
     INFO,
     WARN,
-    ERROR
+    ERROR;
+
+    public boolean isEnabled(Level level) {
+        return ordinal() <= level.ordinal();
+    }
+
 }

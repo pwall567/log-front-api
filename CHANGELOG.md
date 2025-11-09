@@ -2,6 +2,12 @@
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/).
 
+## [3.0] - 2025-11-09
+### Changed
+- `Level`: added `isEnabled()` function
+- `Logger`: switched to use `Level.isEnabled()`
+- `Logger`: added functions that take a time parameter
+
 ## [2.1] - 2025-02-23
 ### Added
 - `LoggerException`: exception class for exceptions thrown within the library

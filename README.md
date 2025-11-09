@@ -59,6 +59,19 @@ In `log-front-api` there are 5 levels, specified in the [`Level`](#level) enum.
 It is possible (but not necessary) to specify the initial level for a `Logger` when requesting it from the
 `LoggerFactory`; not all implementing classes make use of an initial level specified in this way.
 
+## Time
+
+It can be useful to be able to specify the time of a log entry, as opposed to letting the logging system apply the
+current time (possibly using a supplied `Clock` &ndash; see [below](#clock)).
+For example, when creating a database record, it can be valuable to have the log entry show the same creation time as
+that stored in the record.
+Also, when log entries are written in a separate thread from the one creating them, it is clearly preferable for the log
+entries to be tagged with the time they were created, not when they are were later output.
+
+To accommodate this requirement, all of the logging function have forms that take a time (as an `Instant`).
+It should be noted that not all underlying log mechanisms allow the time to be specified, so in many cases this time
+parameter will be ignored (in particular, `slf4j` lacks the ability to specify the time of a log entry).
+
 ## Clock
 
 For testing purposes, a `java.time.Clock` object can be specified when requesting a `Logger`.
@@ -69,7 +82,8 @@ the functions under test.
 
 Few `Logger` implementations currently make use of a `Clock` specified in this manner, and for those that don&rsquo;t,
 the functionality may safely be ignored.
-If the `Clock` is not specified, the system clock will be used.
+If the `Clock` is not specified, the system clock will be used (unless the time is [specified explicitly](#time) on the
+logging call).
 
 ## Reference
 
@@ -106,7 +120,7 @@ Implementing classes need only implement the last function; default implementati
 the last function, supplying default values for the parameters as follows:
 
 1. **Logger Name** &ndash; if a `Class<?>` is specified, the qualified class name of the class is used; if no logger
-   name is provided, the qualified class name of the calling class is used.
+   name or class is provided, the qualified class name of the calling class is used.
 2. **Level** &ndash; if no level is specified, the default level for the `LoggerFactory` is used (see
    [`getDefaultLevel()`](#getdefaultlevel)).
 3. **Clock** &ndash; if no clock is specified, the default clock for the `LoggerFactory` is used (see
@@ -164,6 +178,18 @@ The second `error` function takes a `Throwable` as well as the message; how the 
 the implementation.
 The last function in the list allows the level to be specified as a parameter.
 
+To specify the time of a logging event explicitly, the followings forms are also available:
+
+- `void trace(Instant time, Object message)`
+- `void debug(Instant time, Object message)`
+- `void info(Instant time, Object message)`
+- `void warn(Instant time, Object message)`
+- `void error(Instant time, Object message)`
+- `void error(Instant time, Throwable throwable, Object message)`
+- `void log(Instant time, Level level, Object message)`
+
+As noted above, many implementations will ignore the time supplied.
+
 There are also tests for the logging level of the `Logger`:
 
 - `boolean isTraceEnabled()`
@@ -191,7 +217,15 @@ to be used.
 - `void error(Throwable throwable, Supplier<Object> messageSupplier)`
 - `void log(Level level, Supplier<Object> messageSupplier)`
 
-As with the other `error` function, there is a version that takes a `Throwable`.
+- `void trace(Instant time, Supplier<Object> messageSupplier)`
+- `void debug(Instant time, Supplier<Object> messageSupplier)`
+- `void info(Instant time, Supplier<Object> messageSupplier)`
+- `void warn(Instant time, Supplier<Object> messageSupplier)`
+- `void error(Instant time, Supplier<Object> messageSupplier)`
+- `void error(Instant time, Throwable throwable, Supplier<Object> messageSupplier)`
+- `void log(Instant time, Level level, Supplier<Object> messageSupplier)`
+
+As with the other `error` functions, there are versions that take a `Throwable`.
 
 ### Level
 
@@ -207,10 +241,15 @@ In increasing order of severity, they are:
 These will mostly correspond to the level mechanism of the underlying implementation, but the documentation for the
 implementing class should be consulted for details.
 
+The `Level` includes the function `isEnabled` to simplify testing whether the `Level` is enabled for a nominated level
+and all higher levels:
+
+- `boolean isEnabled(Level level)`
+
 ### LoggerException
 
-All exceptions thrown by the library are instances of `LoggerException`, which extends `RuntimeException` (and therefore
-not checked exceptions).
+All exceptions thrown by the library are instances of `LoggerException`, which extends `RuntimeException` (and are
+therefore not checked exceptions).
 
 ### NullLoggerFactory
 
@@ -223,25 +262,25 @@ along with implementations of the `isEnabled()` functions that always return `fa
 
 ## Dependency Specification
 
-The latest version of the library is 2.1, and it may be obtained from the Maven Central repository.
+The latest version of the library is 3.0, and it may be obtained from the Maven Central repository.
 
 ### Maven
 ```xml
     <dependency>
       <groupId>io.jstuff</groupId>
       <artifactId>log-front-api</artifactId>
-      <version>2.1</version>
+      <version>3.0</version>
     </dependency>
 ```
 ### Gradle
 ```groovy
-    implementation 'io.jstuff:log-front-api:2.1'
+    implementation 'io.jstuff:log-front-api:3.0'
 ```
 ### Gradle (kts)
 ```kotlin
-    implementation("io.jstuff:log-front-api:2.1")
+    implementation("io.jstuff:log-front-api:3.0")
 ```
 
 Peter Wall
 
-2025-02-23
+2025-11-09
